@@ -7,12 +7,14 @@ class Assignment
   # Insert rows in DB
   #
   def create_user(params)
+    User.create(params)
       # accept a hash of user properties (`:username` and `:password_digest`) as an input parameter. Note these are 100% same as model class.
       # use the User Model class to create a new user in the DB
       # return an instance of the class with primary key (`id`), and dates (`created_at` and `updated_at`) assigned
   end
 
   def create_todolist(params)
+    TodoList.create(:list_name => params[:name], :list_due_date => params[:due_date])
       # accept a hash of todolist properties (`:name` and `:due_date`) as an input parameter. Note these are not 100% the same as Model class.
       # use the TodoList Model class to create a new user in the DB
       # return an instance of the class with primary key (`id`), and dates (`created_at` and `updated_at`) assigned
@@ -22,12 +24,14 @@ class Assignment
   # Retrieve paginated results from DB
   #
   def find_allusers(offset, limit)
+    User.all.offset(offset).limit(limit)
       # accept offset and limit input parameters
       # use the User Model class to find all Users, ordered by `updated_at` ascending, with specified row offset and row limit
       # return a collection of User instances that represent the specified rows
   end
 
   def find_alllists(offset, limit)
+    TodoList.all.offset(offset).limit(limit).order(list_due_date: :desc)
       # accept offset and limit input parameters
       # use the TodoList Model class to find all TodoLists, ordered by `list_due_date` descending, with specified row offset and row limit
       # return a collection of TodoList instances that represent the specified rows
@@ -37,6 +41,7 @@ class Assignment
   # Query DB with exact match
   #
   def find_user_byname(username)
+    User.where(username: username)
       # accept a username input parameter
       # use the User Model class to find all Users with the supplied username.
       # NOTE:  Username is not unique in the Users table, thus you can have many users with the same username.
@@ -44,6 +49,7 @@ class Assignment
   end
 
   def find_todolist_byname(name)
+    TodoList.where(list_name: name)
       # accept a name input parameter
       # use the TodoList Model class to find all TodoLists with the supplied list_name.
       # NOTE: List name is not required to be unique, thus you can have many lists with the same list name.
@@ -54,12 +60,14 @@ class Assignment
   # Get rows from DB by PK
   #
   def get_user_byid(id)
+    User.find(id)
       # accept an id input parameter
       # use the User Model class to get the User associated with the `id` primary key
       # return the User instance that matches the provided id
   end
 
   def get_todolist_byid(id)
+    TodoList.find(id)
       # accept an id input parameter
       # use the TodoList Model class to get the TodoList associated with the `id` primary key
       # return the TodoList instance that matches the provided id
